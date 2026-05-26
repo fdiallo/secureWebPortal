@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+/**
+ * Define the User Schema
+ * It supports both local and third-party methods
+ */
 const UserSchema = new Schema({
   email: {
     type: String,
