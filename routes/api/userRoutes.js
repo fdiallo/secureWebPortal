@@ -31,4 +31,23 @@ router.post('/login', async (req, res) => {
   res.json({ token, user });
 });
 
+// When a user visits this URL, they will be redirected to GitHub to log in.
+router.get(
+  '/auth/github',
+  passport.authenticate('github', { scope: ['user:email'] }) // Request email scope
+);
+ 
+// The callback route that GitHub will redirect to after the user approves.
+router.get(
+  '/auth/github/callback',
+  passport.authenticate('github', {
+    failureRedirect: '/login', 
+    session: false 
+  }),
+  (req, res) => {
+    const token = signToken(req.user);
+    res.redirect(`http://localhost:3000?token=${token}`);
+  }
+);
+
 module.exports = router;
